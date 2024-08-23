@@ -1,15 +1,14 @@
-import React from 'react'
-import { Container, Box, Typography, AppBar, Toolbar, Button } from '@mui/material'
-import { SignIn } from '@clerk/nextjs'
-import Link from 'next/link'
+import { SignIn, SignUp } from '@clerk/nextjs';
+import { AppBar, Container, Box, Typography, Button, Toolbar } from '@mui/material';
+import Link from 'next/link';
 
-export default function SignUpPage(){
+export default function SignUpPage() {
     return (
         <Container maxWidth="100vw">
-            <AppBar position="static" sx={{backgroundColor: '#3f51b5'}}>
+            <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" sx={{flexGrow: 1}}>
-                        Flashcard SaaS
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                        FlashCards
                     </Typography>
                     <Button color="inherit">
                         <Link href="/sign-in" passHref>
@@ -23,18 +22,20 @@ export default function SignUpPage(){
                     </Button>
                 </Toolbar>
             </AppBar>
+
             <Box
                 display="flex"
                 flexDirection="column"
-                justifyContent="center"
                 alignItems="center"
-                sx={{textAlign: 'center', my: 4}}
+                justifyContent="center"
+                minHeight="80vh"
+                sx={{ textAlign: 'center', mt: 4 }}
             >
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Sign In
+                <Typography variant="h4" gutterBottom>
+                    Sign Up
                 </Typography>
-                <SignIn/>
+                <SignUp />
             </Box>
         </Container>
-    )
+    );
 }
