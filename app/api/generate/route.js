@@ -40,7 +40,7 @@ export async function POST(req) {
         { role: 'system', content: systemPrompt },
         { role: 'user', content: data },
       ],
-      model: "gpt-4o",  // Make sure this is the correct model name
+      model: "gpt-4",  // Make sure this is the correct model name
     });
 
     const flashcards = JSON.parse(completion.choices[0].message.content);

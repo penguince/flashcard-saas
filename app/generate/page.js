@@ -31,6 +31,7 @@ export default function Generate() {
     const [text, setText] = useState('')
     const [setName, setSetName] = useState('')
     const [dialogOpen, setDialogOpen] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     const searchParams = useSearchParams()
     const search = searchParams.get('id')
@@ -38,27 +39,37 @@ export default function Generate() {
 
     const handleSubmit = async () => {
         if (!text.trim()) {
-            alert('Please enter some text to generate flashcards.')
-            return
+            alert('Please enter some text to generate flashcards.');
+            return;
         }
-  
+    
+        setLoading(true); // Set loading to true before starting the async operation
         try {
             const response = await fetch('/api/generate', {
-            method: 'POST',
-            body: text,
-        })
-  
-        if (!response.ok) {
-            throw new Error('Failed to generate flashcards')
-        }
-  
-        const data = await response.json()
-        setFlashcards(data)
+                method: 'POST',
+                body: JSON.stringify({ text }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Error response:', errorData);
+                throw new Error('Failed to generate flashcards');
+            }
+    
+            const data = await response.json();
+            setFlashcards(data);
         } catch (error) {
-        console.error('Error generating flashcards:', error)
-        alert('An error occurred while generating flashcards. Please try again.')
+            console.error('Error generating flashcards:', error);
+            alert('An error occurred while generating flashcards. Please try again.');
+        } finally {
+            setLoading(false); // Reset loading state after operation completes
         }
-    }
+    };
+    
+    
 
     useEffect(() => {
         async function getFlashcard() {
@@ -146,13 +157,15 @@ export default function Generate() {
                     sx={{ mb: 2 }}
                 />
                 <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSubmit}
-                    fullWidth
-                >
-                    Generate Flashcards
-                </Button>
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            fullWidth
+            disabled={loading} // Disable the button when loading
+            >
+            {loading ? 'Generating...' : 'Generate Flashcards'}
+            </Button>
+
             </Paper>
         </Box>
 
